@@ -5,6 +5,12 @@ import PackageDescription
 
 let package = Package(
     name: "atcoder-notifier",
+    platforms: [
+        .macOS(.v12)
+    ],
+    products: [
+        .executable(name: "Notifier", targets: ["Notifier"]),
+    ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
