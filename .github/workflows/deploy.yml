@@ -16,6 +16,9 @@ jobs:
     - name: Build
       run: docker run --volume "$(pwd)/:/src" --workdir "/src" swift:5.7-amazonlinux2 swift build --product Notifier -c release
 
+    - name: Copy binary file
+      run: cp .build/release/Notifier . && du -h ./Notifier
+
     - name: Serverless deploy
       uses: serverless/github-action@v3
       with:

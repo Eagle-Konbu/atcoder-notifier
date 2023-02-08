@@ -12,7 +12,7 @@ provider:
 
 functions:
   notify:
-    handler: .build/release/Notifier
+    handler: ./Notifier
     memorySize: 128
     events:
       - schedule: cron(0 23 * * MON *)
