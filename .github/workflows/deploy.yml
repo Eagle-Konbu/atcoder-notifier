@@ -20,7 +20,8 @@ jobs:
       run: docker run --volume "$(pwd)/:/src" --workdir "/src" builder swift build --product Notifier -c release
 
     - name: Create zip file
-      run: docker run --volume "$(pwd)/:/src" --workdir "/src" builder source create_zip.sh
+      run: docker run --volume "$(pwd)/:/src" --workdir "/src" builder /bin/bash -c "source create_zip.sh"
+
     - name: Serverless deploy
       uses: serverless/github-action@v3
       with:
