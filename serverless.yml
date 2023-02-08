@@ -18,6 +18,6 @@ functions:
     handler: Notifier
     memorySize: 128
     events:
-      - schedule: cron(0 23 * * 1 *)
+      - schedule: cron(0 23 ? * 1 *)
     environment:
       SLACK_URL: ${env:SLACK_URL}
