@@ -1,6 +1,6 @@
 #!/bin/bash
 
-swift build --product Notifier -c release
+swift build --product Notifier -c release -Xswiftc -g
 
 target=.build/lambda
 
