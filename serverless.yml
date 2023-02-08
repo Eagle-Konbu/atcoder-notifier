@@ -12,7 +12,8 @@ provider:
 
 functions:
   notify:
-    handler: ./Notifier
+    package:
+      artifact: .build/lambda/lambda.zip
     memorySize: 128
     events:
       - schedule: cron(0 23 * * MON *)
