@@ -12,6 +12,7 @@ provider:
 
 functions:
   notify:
+    handler: Notify
     package:
       artifact: .build/lambda/lambda.zip
     memorySize: 128
