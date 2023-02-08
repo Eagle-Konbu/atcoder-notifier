@@ -10,7 +10,7 @@ public class Scraper {
         self.url = "https://atcoder.jp/home"
     }
     
-    func fetchUpcomingContests() -> [Contest] {
+    public func fetchUpcomingContests() -> [Contest] {
         var contests: [Contest] = []
         
         let contestTableSelector = "#contest-table-upcoming > div > table > tbody > tr"

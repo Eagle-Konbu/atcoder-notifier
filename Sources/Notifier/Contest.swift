@@ -1,11 +1,11 @@
 import Foundation
 
-struct Contest {
-    let name: String
-    let startTime: Date
-    let url: String
+public struct Contest {
+    public let name: String
+    public let startTime: Date
+    public let url: String
     
-    var startTimeStr: String {
+    public var startTimeStr: String {
         get {
             let formatter = DateFormatter()
             formatter.timeZone = TimeZone(identifier: "Asia/Tokyo")
@@ -15,7 +15,7 @@ struct Contest {
         }
     }
     
-    var abstStr: String {
+    public var abstStr: String {
         get {
             return "\(name)\n\(self.startTimeStr)開始"
         }

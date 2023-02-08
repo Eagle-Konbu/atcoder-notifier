@@ -25,19 +25,11 @@ let package = Package(
             name: "Notifier",
             dependencies: [
                 .product(name: "AWSLambdaRuntime", package: "swift-aws-lambda-runtime"),
-            ]),
-        .executableTarget(
-            name: "Scraper",
-            dependencies: [
-                "Kanna",
                 "Alamofire",
+                "Kanna",
             ]),
         .testTarget(
             name: "NotifierTests",
             dependencies: ["Notifier"]),
-        .testTarget(
-            name: "ScraperTests",
-            dependencies: ["Scraper"]
-        )
     ]
 )
