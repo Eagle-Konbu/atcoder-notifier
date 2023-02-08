@@ -2,7 +2,7 @@
 
 swift build --product Notifier -c release
 
-target = .build/lambda
+target=.build/lambda
 
 rm -rf "$target"
 mkdir -p "$target"
