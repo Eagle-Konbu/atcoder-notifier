@@ -15,6 +15,6 @@ functions:
     handler: .build/release/Notifier
     memorySize: 128
     events:
-      - schedule: cron(0 23 * * ? *)
+      - schedule: cron(0 23 * * MON *)
     environment:
       SLACK_URL: ${env:SLACK_URL}
