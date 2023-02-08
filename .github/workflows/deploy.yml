@@ -1,0 +1,25 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SLACK_URL: ${{ secrets.SLACK_URL }}
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build
+      run: docker run --volume "$(pwd)/:/src" --workdir "/src" swift:5.7-amazonlinux2 swift build --product Notifier -c release
+
+    - name: Serverless deploy
+      uses: serverless/github-action@v3
+      with:
+        args: deploy
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
