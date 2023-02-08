@@ -53,7 +53,7 @@ public class Slack {
     public func send() -> Void {
         let semaphore = DispatchSemaphore(value: 0)
         let queue = DispatchQueue.global(qos: .utility)
-        AF.request(self.url, method: .post, parameters: self.requestBody, encoding: URLEncoding(destination: .queryString)).responseString(queue: queue) { response in
+        AF.request(self.url, method: .post, parameters: self.requestBody, encoding: JSONEncoding.default, headers: ["Content-type": "application/json"]).responseString(queue: queue) { response in
             switch response.result {
             case .success(let res):
                 print(res)
