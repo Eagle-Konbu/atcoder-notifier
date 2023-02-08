@@ -4,12 +4,9 @@ frameworkVersion: '3'
 
 useDotenv: true
 
-plugins:
-  - serverless-swift
-
 provider:
   name: aws
-  runtime: swift
+  runtime: provided.al2
   stage: prod
   region: ap-northeast-1
 
