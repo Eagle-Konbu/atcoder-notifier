@@ -35,5 +35,9 @@ let package = Package(
         .testTarget(
             name: "NotifierTests",
             dependencies: ["Notifier"]),
+        .testTarget(
+            name: "ScraperTests",
+            dependencies: ["Scraper"]
+        )
     ]
 )

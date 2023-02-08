@@ -3,21 +3,41 @@ import Foundation
 import Alamofire
 import Kanna
 
-class Scraper {
+public class Scraper {
     var url: String
     
-    init() {
+    public init() {
         self.url = "https://atcoder.jp/home"
     }
     
-    private func fetchUpcomingContests() -> String {
-        var contests = []
-        AF.request(self.url).responseString { response in
-            let html = response.value {
-                if let doc = try? HTML(html: html, encoding: String.Encoding.utf8) {
-                    
+    public func fetchUpcomingContests() -> String {
+        var contests = ""
+        
+        let contestTableSelector = "#contest-table-upcoming > div > table > tbody > tr"
+        let dateSelector = "td:nth-child(1) > small > a"
+        let nameSelector = "td:nth-child(2) > small > a"
+                
+        let semaphore = DispatchSemaphore(value: 0)
+        let queue = DispatchQueue.global(qos: .utility)
+        AF.request(self.url).responseString(queue: queue) { response in
+            switch response.result {
+            case .success(_):
+                if let html = response.value {
+                    if let doc = try? HTML(html: html, encoding: .utf8) {
+                        for e in doc.css(contestTableSelector) {
+                            let dateStr = e.css(dateSelector).first?.text
+                            let name = e.css(nameSelector).first?.text
+                            
+                            contests += "\(dateStr ?? ""), \(name ?? "")\n"
+                        }
+                    }
                 }
+            case .failure(let error):
+                print(error)
             }
+            semaphore.signal()
         }
+        semaphore.wait()
+        return contests
     }
 }
