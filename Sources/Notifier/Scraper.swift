@@ -7,7 +7,7 @@ public class Scraper {
     var url: String
     
     public init() {
-        self.url = "https://atcoder.jp/home"
+        self.url = "https://atcoder.jp/home?lang=ja"
     }
     
     public func fetchUpcomingContests() -> [Contest] {
