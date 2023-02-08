@@ -4,7 +4,7 @@ import Alamofire
 
 public class Slack {
     public let contests: [Contest]
-    let url: URL
+    let url: String
     
     var requestBody: [String: Any] {
         get {
@@ -47,13 +47,13 @@ public class Slack {
     
     public init(contests: [Contest]) {
         self.contests = contests
-        self.url = URL(string: "https://hooks.slack.com/services/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")!
+        self.url = ProcessInfo.processInfo.environment["SLACK_URL"]!
     }
     
     public func send() -> Void {
         let semaphore = DispatchSemaphore(value: 0)
         let queue = DispatchQueue.global(qos: .utility)
-        AF.request("https://hooks.slack.com/services/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", method: .post, parameters: self.requestBody, encoding: URLEncoding(destination: .queryString)).responseString(queue: queue) { response in
+        AF.request(self.url, method: .post, parameters: self.requestBody, encoding: URLEncoding(destination: .queryString)).responseString(queue: queue) { response in
             switch response.result {
             case .success(let res):
                 print(res)
