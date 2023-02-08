@@ -10,11 +10,12 @@ provider:
   stage: prod
   region: ap-northeast-1
 
+package: 
+  artifact: .build/lambda/lambda.zip
+
 functions:
   notify:
-    handler: Notify
-    package:
-      artifact: .build/lambda/lambda.zip
+    handler: Notifier
     memorySize: 128
     events:
       - schedule: cron(0 23 * * MON *)
