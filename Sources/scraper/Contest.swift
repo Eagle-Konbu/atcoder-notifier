@@ -7,16 +7,24 @@ struct Contest {
     
     var startTimeStr: String {
         get {
+            let formatter = DateFormatter()
+            formatter.timeZone = TimeZone(identifier: "Asia/Tokyo")
+            formatter.locale = Locale(identifier: "ja_JP")
+            formatter.dateFormat = "M/d(EEE) HH:mm"
             return formatter.string(from: self.startTime)
         }
     }
     
-    private let formatter: DateFormatter
-    
+    var abstStr: String {
+        get {
+            return "\(name)\n\(self.startTimeStr)開始"
+        }
+    }
+        
     public init(name: String, startTimeStr: String, url: String) {
-        self.formatter = DateFormatter()
-        self.formatter.timeZone = TimeZone(identifier: "Asia/Tokyo")
-        self.formatter.dateFormat = "yyyy-MM-dd HH:mm:ssZ"
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(identifier: "Asia/Tokyo")
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ssZ"
         
         self.name = name
         self.startTime = formatter.date(from: startTimeStr)!
