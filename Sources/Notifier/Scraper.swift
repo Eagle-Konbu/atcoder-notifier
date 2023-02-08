@@ -27,7 +27,7 @@ public class Scraper {
                         for e in doc.css(contestTableSelector) {
                             let dateStr = e.css(dateSelector).first?.text ?? ""
                             let name = e.css(nameSelector).first?.text ?? ""
-                            let url = self.url + (e.css(nameSelector).first?["href"] ?? "")
+                            let url = "https://atcoder.jp" + (e.css(nameSelector).first?["href"] ?? "")
                             contests.append(Contest(name: name, startTimeStr: dateStr, url: url))
                         }
                     }

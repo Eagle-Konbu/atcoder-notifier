@@ -8,7 +8,15 @@ public class Slack {
     
     var requestBody: [String: Any] {
         get {
-            var blocks: [Any] = []
+            var blocks: [Any] = [
+                [
+                    "type": "header",
+                    "text": [
+                        "type": "plain_text",
+                        "text": ":deployparrot: 今週のAtCoderコンテスト  :deployparrot:"
+                    ]
+                ]
+            ]
             for contest in contests {
                 let blockToAdd: [[String: Any]] = [
                     [
@@ -17,18 +25,8 @@ public class Slack {
                     [
                         "type": "section",
                         "text": [
-                            "type": "plain_text",
-                            "text": contest.abstStr
-                        ],
-                        "accessory": [
-                            "type": "button",
-                            "text": [
-                                "type": "plain_text",
-                                "text": "参加登録"
-                            ],
-                            "value": "click_me_123",
-                            "action_id": "button-action",
-                            "url": contest.url
+                            "type": "mrkdwn",
+                            "text": "<\(contest.url)|\(contest.name)>\n\(contest.startTimeStr)開始"
                         ]
                     ]
                 ]
@@ -82,18 +80,8 @@ public class Slack {
 //        {
 //            "type": "section",
 //            "text": {
-//                "type": "plain_text",
-//                "text": "AGC061\n01/02 (日) 21:00 開始",
-//            },
-//            "accessory": {
-//                "type": "button",
-//                "text": {
-//                    "type": "plain_text",
-//                    "text": "参加登録"
-//                },
-//                "value": "click_me_123",
-//                "action_id": "button-action",
-//                "url": "https://atcoder.jp/contests/agc061"
+//                "type": "mrkdwn",
+//                "text": "<https://atcoder.jp/contests/agc061|AGC061>\n01/02 (日) 21:00 開始"
 //            }
 //        }
 //    ]
