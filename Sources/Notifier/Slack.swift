@@ -44,7 +44,11 @@ public class Slack {
     }
     
     public init(contests: [Contest]) {
-        self.contests = contests
+        self.contests = contests.filter {
+            let from = Date()
+            let to = Date(timeInterval: 60*60*24*7, since: from)
+            return (from...to).contains($0.startTime)
+        }
         self.url = ProcessInfo.processInfo.environment["SLACK_URL"]!
     }
     
