@@ -1,5 +1,5 @@
 let scraper = Scraper()
 
-let res = await scraper.fetchUpcomingContests()
+let res = scraper.fetchUpcomingContests()
 
 print(res)

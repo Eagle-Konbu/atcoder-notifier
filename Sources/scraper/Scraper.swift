@@ -10,8 +10,8 @@ public class Scraper {
         self.url = "https://atcoder.jp/home"
     }
     
-    public func fetchUpcomingContests() -> String {
-        var contests = ""
+    func fetchUpcomingContests() -> [Contest] {
+        var contests: [Contest] = []
         
         let contestTableSelector = "#contest-table-upcoming > div > table > tbody > tr"
         let dateSelector = "td:nth-child(1) > small > a"
@@ -25,10 +25,9 @@ public class Scraper {
                 if let html = response.value {
                     if let doc = try? HTML(html: html, encoding: .utf8) {
                         for e in doc.css(contestTableSelector) {
-                            let dateStr = e.css(dateSelector).first?.text
-                            let name = e.css(nameSelector).first?.text
-                            
-                            contests += "\(dateStr ?? ""), \(name ?? "")\n"
+                            let dateStr = e.css(dateSelector).first?.text ?? ""
+                            let name = e.css(nameSelector).first?.text ?? ""
+                            contests.append(Contest(name: name, startTimeStr: dateStr))
                         }
                     }
                 }
