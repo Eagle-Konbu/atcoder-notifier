@@ -13,11 +13,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Build Docker Image
-      run: docker build -t builder .
-
     - name: Build Package
-      run: docker run --volume "$(pwd)/:/src" --workdir "/src" builder /bin/bash -c "source build.sh"
+      run: docker run --volume "$(pwd)/:/src" --workdir "/src" swift:5.7-amazonlinux2 /bin/bash -c "source build.sh"
 
     - name: Serverless deploy
       uses: serverless/github-action@v3
