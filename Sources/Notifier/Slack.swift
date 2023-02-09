@@ -36,7 +36,7 @@ public class Slack {
                 }
             }
             let res: [String: Any] = [
-                "texts": "今週のAtCoderコンテスト",
+                "text": "今週のAtCoderコンテスト",
                 "blocks": blocks
             ]
             
