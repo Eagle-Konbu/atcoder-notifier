@@ -36,6 +36,7 @@ public class Slack {
                 }
             }
             let res = [
+                "texts": "今週のAtCoderコンテスト",
                 "blocks": blocks
             ]
             
