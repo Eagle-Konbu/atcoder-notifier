@@ -4,22 +4,24 @@ import Alamofire
 import Kanna
 
 public class Scraper {
-    var url: String
-    
-    public init() {
-        self.url = "https://atcoder.jp/home?lang=ja"
+    public func fetchUpcomingContests() -> [Contest] {
+        let contests = self.fetchUpcomingAtCoderContests()
+        
+        return contests
     }
     
-    public func fetchUpcomingContests() -> [Contest] {
+    func fetchUpcomingAtCoderContests() -> [Contest] {
+        let url = "https://atcoder.jp/home?lang=ja"
+
         var contests: [Contest] = []
         
         let contestTableSelector = "#contest-table-upcoming > div > table > tbody > tr"
         let dateSelector = "td:nth-child(1) > small > a"
         let nameSelector = "td:nth-child(2) > small > a"
-                
+
         let semaphore = DispatchSemaphore(value: 0)
         let queue = DispatchQueue.global(qos: .utility)
-        AF.request(self.url).responseString(queue: queue) { response in
+        AF.request(url).responseString(queue: queue) { response in
             switch response.result {
             case .success(_):
                 if let html = response.value {
