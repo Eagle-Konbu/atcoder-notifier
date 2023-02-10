@@ -3,7 +3,7 @@ import Foundation
 public struct Contest {
     public let name: String
     public let startTime: Date
-    public let url: String
+    public let url: String?
     public let host: ContestHost
     
     public var startTimeStr: String {
@@ -34,9 +34,9 @@ public struct Contest {
     }
 }
 
-public enum ContestHost {
-    case atcoder
-    case codeforces
-    case topcoder
-    case yukicoder
+public enum ContestHost: String {
+    case atcoder = "AtCoder"
+    case codeforces = "Codeforces"
+    case topcoder = "Topcoder"
+    case yukicoder = "yukicoder"
 }

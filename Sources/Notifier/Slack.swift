@@ -13,12 +13,15 @@ public class Slack {
                     "type": "header",
                     "text": [
                         "type": "plain_text",
-                        "text": ":deployparrot: 今週のAtCoderコンテスト  :deployparrot:"
+                        "text": ":deployparrot: 今週の競プロ :deployparrot:"
                     ]
                 ]
             ]
-            for contest in contests {
-                let blockToAdd: [[String: Any]] = [
+            for host in [ContestHost.atcoder, ContestHost.codeforces, ContestHost.topcoder, ContestHost.yukicoder] {
+                if !contests.map({ $0.host }).contains(host) {
+                    continue
+                }
+                var blockToAdd: [[String: Any]] = [
                     [
                         "type": "divider"
                     ],
@@ -26,17 +29,26 @@ public class Slack {
                         "type": "section",
                         "text": [
                             "type": "mrkdwn",
-                            "text": "<\(contest.url)|\(contest.name)>\n\(contest.startTimeStr)開始"
+                            "text": "*\(host.rawValue)*"
                         ]
                     ]
                 ]
-                
+                for contest in contests.filter({ $0.host == host }) {
+                    blockToAdd.append([
+                        "type": "section",
+                        "text": [
+                            "type": "mrkdwn",
+                            "text": contest.url != nil ? "<\(contest.url ?? "")|\(contest.name)>\n\(contest.startTimeStr)開始" : "\(contest.name)\n\(contest.startTimeStr)開始"
+                        ]
+                    ])
+                }
                 for block in blockToAdd {
                     blocks.append(block)
                 }
+                
             }
             let res: [String: Any] = [
-                "text": "今週のAtCoderコンテスト",
+                "text": "今週の競プロ",
                 "blocks": blocks
             ]
             
@@ -76,7 +88,7 @@ public class Slack {
 //            "type": "header",
 //            "text": {
 //                "type": "plain_text",
-//                "text": ":deployparrot: 今週のAtCoderコンテスト  :deployparrot:"
+//                "text": ":deployparrot: 今週の競プロ :deployparrot:"
 //            }
 //        },
 //        {
@@ -86,7 +98,45 @@ public class Slack {
 //            "type": "section",
 //            "text": {
 //                "type": "mrkdwn",
+//                "text": "*AtCoder*"
+//            }
+//        },
+//        {
+//            "type": "section",
+//            "text": {
+//                "type": "mrkdwn",
 //                "text": "<https://atcoder.jp/contests/agc061|AGC061>\n01/02 (日) 21:00 開始"
+//            }
+//        },
+//        {
+//            "type": "section",
+//            "text": {
+//                "type": "mrkdwn",
+//                "text": "<https://atcoder.jp/contests/agc061|AGC061>\n01/02 (日) 21:00 開始"
+//            }
+//        },
+//        {
+//            "type": "divider"
+//        },
+//        {
+//            "type": "section",
+//            "text": {
+//                "type": "mrkdwn",
+//                "text": "*Codeforces*"
+//            }
+//        },
+//        {
+//            "type": "section",
+//            "text": {
+//                "type": "mrkdwn",
+//                "text": "<https://codeforces.com/contestRegistrants/1793|Codeforces Round #852 (Div. 2)>\n01/02 (日) 21:00 開始"
+//            }
+//        },
+//        {
+//            "type": "section",
+//            "text": {
+//                "type": "mrkdwn",
+//                "text": "Educational Codeforces Round 143 (Rated for Div. 2)\n01/02 (日) 21:00 開始"
 //            }
 //        }
 //    ]
