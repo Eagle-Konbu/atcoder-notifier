@@ -45,7 +45,6 @@ public class Slack {
                 for block in blockToAdd {
                     blocks.append(block)
                 }
-                
             }
             let res: [String: Any] = [
                 "text": "今週の競プロ",

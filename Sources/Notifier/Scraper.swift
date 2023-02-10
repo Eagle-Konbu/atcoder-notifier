@@ -1,4 +1,5 @@
 import Foundation
+import CommonCrypto
 
 import Alamofire
 import Kanna
@@ -6,6 +7,8 @@ import Kanna
 public class Scraper {
     public func fetchUpcomingContests() -> [Contest] {
         let contests = self.fetchUpcomingAtCoderContests()
+        
+        self.fetchUpcomingCFContests()
         
         return contests
     }
@@ -41,5 +44,37 @@ public class Scraper {
         }
         semaphore.wait()
         return contests
+    }
+    
+    func fetchUpcomingCFContests() -> [Contest] {
+        let url = "https://codeforces.com/api/"
+        var contests: [Contest] = []
+        
+        let apiKey = ProcessInfo.processInfo.environment["CF_API_KEY"]!
+        let apiSecret = ProcessInfo.processInfo.environment["CF_API_SECRET"]!
+        
+        let methodName = "contest.list"
+        
+        let unixTime = String(Date().timeIntervalSince1970)
+        
+        let params = ["gym": "false", "apiKey": apiKey, "time": unixTime]
+        let apiSig = apiSigForCFApi(methodName: methodName, secret: apiSecret, params: params)
+                
+        return contests
+    }
+    
+    private func apiSigForCFApi(methodName: String, secret: String, params: [String: String]) -> String {
+        let charactersSource = "abcdefghijklmnopqrstuvwxyz#$%&_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        let randStr = String((0..<10).compactMap{ _ in charactersSource.randomElement() })
+        let paramStr = params.map { key, value in
+            return "\(key)=\(value)"
+        }.joined(separator: "&")
+        
+        let raw = "\(randStr)/\(methodName)?\(paramStr)#\(secret)"
+        var hash = [UInt8](repeating: 0, count: Int(CC_SHA512_DIGEST_LENGTH))
+        raw.data(using: .utf8)!.withUnsafeBytes {
+            _ = CC_SHA512($0.baseAddress, CC_LONG(raw.count), &hash)
+        }
+        return randStr + hash.map { String(format: "%02x", $0) }.joined()
     }
 }
