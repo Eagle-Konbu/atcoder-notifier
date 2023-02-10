@@ -4,6 +4,7 @@ public struct Contest {
     public let name: String
     public let startTime: Date
     public let url: String
+    public let host: ContestHost
     
     public var startTimeStr: String {
         get {
@@ -21,7 +22,7 @@ public struct Contest {
         }
     }
         
-    public init(name: String, startTimeStr: String, url: String) {
+    public init(name: String, startTimeStr: String, url: String, host: ContestHost) {
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone(identifier: "Asia/Tokyo")
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ssZ"
@@ -29,5 +30,13 @@ public struct Contest {
         self.name = name
         self.startTime = formatter.date(from: startTimeStr)!
         self.url = url
+        self.host = host
     }
+}
+
+public enum ContestHost {
+    case atcoder
+    case codeforces
+    case topcoder
+    case yukicoder
 }

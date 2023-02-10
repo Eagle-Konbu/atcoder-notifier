@@ -30,7 +30,7 @@ public class Scraper {
                             let dateStr = e.css(dateSelector).first?.text ?? ""
                             let name = e.css(nameSelector).first?.text ?? ""
                             let url = "https://atcoder.jp" + (e.css(nameSelector).first?["href"] ?? "")
-                            contests.append(Contest(name: name, startTimeStr: dateStr, url: url))
+                            contests.append(Contest(name: name, startTimeStr: dateStr, url: url, host: .atcoder))
                         }
                     }
                 }
