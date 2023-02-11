@@ -6,10 +6,8 @@ import Kanna
 
 public class Scraper {
     public func fetchUpcomingContests() -> [Contest] {
-        let contests = self.fetchUpcomingAtCoderContests()
-        
-        self.fetchUpcomingCFContests()
-        
+        let contests = self.fetchUpcomingAtCoderContests() + self.fetchUpcomingCFContests()
+                
         return contests
     }
     
@@ -50,28 +48,41 @@ public class Scraper {
         let url = "https://codeforces.com/api/"
         var contests: [Contest] = []
         
-        let apiKey = ProcessInfo.processInfo.environment["CF_API_KEY"]!
-        let apiSecret = ProcessInfo.processInfo.environment["CF_API_SECRET"]!
-        
         let methodName = "contest.list"
-        
-        let unixTime = String(Date().timeIntervalSince1970)
-        
-        let params = ["gym": "false", "apiKey": apiKey, "time": unixTime]
-        let apiSig = apiSigForCFApi(methodName: methodName, secret: apiSecret, params: params)
                 
-        return contests
+        let params = ["gym": "false"]
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        let queue = DispatchQueue.global(qos: .utility)
+        AF.request(url + methodName, parameters: params).responseDecodable(of: CFResponse.self, queue: queue) { response in
+            switch response.result {
+            case .success(let res):
+                for contest in res.result.filter({ $0.phase == "BEFORE" && !$0.frozen }) {
+                    contests.append(Contest(name: contest.name, startTime: Date(timeIntervalSince1970: TimeInterval(contest.startTimeSeconds)), url: nil, host: .codeforces))
+                }
+            case .failure(let err):
+                print(err)
+            }
+            semaphore.signal()
+        }
+        semaphore.wait()
+                
+        return contests.sorted(by: { $0.startTime < $1.startTime })
     }
     
-    private func apiSigForCFApi(methodName: String, secret: String, params: [String: String]) -> String {
-        let charactersSource = "abcdefghijklmnopqrstuvwxyz#$%&_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-        let randStr = String((0..<10).compactMap{ _ in charactersSource.randomElement() })
-        let paramStr = params.map { key, value in
-            return "\(key)=\(value)"
-        }.joined(separator: "&")
-        
-        let raw = "\(randStr)/\(methodName)?\(paramStr)#\(secret)"
-        let hash = SHA512.hash(data: raw.data(using: .utf8)!).map { String(format: "%02hhx", $0) }.joined()
-        return randStr + hash
+    struct CFContest: Codable {
+        let id: Int
+        let name: String
+        let type: String
+        let phase: String
+        let frozen: Bool
+        let durationSeconds: Int
+        let startTimeSeconds: Int
+        let relativeTimeSeconds: Int
+    }
+    
+    struct CFResponse: Codable {
+        let status: String
+        let result: [CFContest]
     }
 }

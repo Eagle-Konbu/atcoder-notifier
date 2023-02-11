@@ -22,13 +22,20 @@ public struct Contest {
         }
     }
         
-    public init(name: String, startTimeStr: String, url: String, host: ContestHost) {
+    public init(name: String, startTimeStr: String, url: String?, host: ContestHost) {
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone(identifier: "Asia/Tokyo")
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ssZ"
         
         self.name = name
         self.startTime = formatter.date(from: startTimeStr)!
+        self.url = url
+        self.host = host
+    }
+    
+    public init(name: String, startTime: Date, url: String?, host: ContestHost) {
+        self.name = name
+        self.startTime = startTime
         self.url = url
         self.host = host
     }
