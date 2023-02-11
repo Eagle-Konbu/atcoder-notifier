@@ -1,5 +1,5 @@
 import Foundation
-import CommonCrypto
+import Crypto
 
 import Alamofire
 import Kanna
@@ -71,10 +71,7 @@ public class Scraper {
         }.joined(separator: "&")
         
         let raw = "\(randStr)/\(methodName)?\(paramStr)#\(secret)"
-        var hash = [UInt8](repeating: 0, count: Int(CC_SHA512_DIGEST_LENGTH))
-        raw.data(using: .utf8)!.withUnsafeBytes {
-            _ = CC_SHA512($0.baseAddress, CC_LONG(raw.count), &hash)
-        }
-        return randStr + hash.map { String(format: "%02x", $0) }.joined()
+        let hash = SHA512.hash(data: raw.data(using: .utf8)!).map { String(format: "%02hhx", $0) }.joined()
+        return randStr + hash
     }
 }
