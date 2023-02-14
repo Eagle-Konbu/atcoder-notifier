@@ -42,7 +42,7 @@ public class Scraper {
         }
         semaphore.wait()
         
-        print(contests)
+        print("AtCoder Contests: \(contests)")
         return contests
     }
     
@@ -69,7 +69,7 @@ public class Scraper {
         }
         semaphore.wait()
                 
-        print(contests)
+        print("CF Contests: \(contests)")
         return contests.sorted(by: { $0.startTime < $1.startTime })
     }
     
