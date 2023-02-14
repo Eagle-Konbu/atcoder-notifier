@@ -41,6 +41,8 @@ public class Scraper {
             semaphore.signal()
         }
         semaphore.wait()
+        
+        print(contests)
         return contests
     }
     
@@ -67,6 +69,7 @@ public class Scraper {
         }
         semaphore.wait()
                 
+        print(contests)
         return contests.sorted(by: { $0.startTime < $1.startTime })
     }
     
