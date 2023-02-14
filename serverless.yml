@@ -9,6 +9,7 @@ provider:
   runtime: provided.al2
   stage: prod
   region: ap-northeast-1
+  architecture: arm64
 
 package: 
   artifact: .build/lambda/lambda.zip

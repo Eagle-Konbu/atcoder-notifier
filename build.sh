@@ -4,7 +4,7 @@ set -eu
 
 yum -y install zip
 
-swift build --product Notifier -c release -Xswiftc -static-stdlib
+swift build --product Notifier -c release --arch arm64 -Xswiftc -static-stdlib
 
 target=.build/lambda
 
