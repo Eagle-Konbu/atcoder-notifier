@@ -17,6 +17,7 @@ functions:
   notify:
     handler: Notifier
     memorySize: 128
+    timeout: 10
     events:
       - schedule: cron(0 23 ? * 1 *)
     environment:
